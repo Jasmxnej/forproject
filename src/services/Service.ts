@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Event, Country } from '@/type';
+import type { Event } from '@/type';
 
 const apiClient = axios.create({
   withCredentials: false,
