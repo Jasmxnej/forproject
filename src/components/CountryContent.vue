@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import { ref, onMounted, defineProps, watchEffect } from 'vue';
-import { useEventStore } from '@/stores/event';
-import { type Event } from '@/type';
+import { ref, onMounted, defineProps, watchEffect } from 'vue'
+import { useEventStore } from '@/stores/event'
+import { type Event } from '@/type'
 
-const props = defineProps<{ page: number; pageSize: number }>();
+const props = defineProps<{ page: number; pageSize: number }>()
 
-const events = ref<Event[]>([]);
-const eventStore = useEventStore();
+const events = ref<Event[]>([])
+const eventStore = useEventStore()
 
 function paginateData() {
   if (eventStore.events.length === 0) {
     return;
   }
 
-  const start = (props.page - 1) * props.pageSize;
-  const end = start + props.pageSize;
-  events.value = eventStore.events.slice(start, end);
+  const start = (props.page - 1) * props.pageSize
+  const end = start + props.pageSize
+  events.value = eventStore.events.slice(start, end)
 }
 
 onMounted(async () => {
+  // Fetch events if not already loaded
   if (eventStore.events.length === 0) {
-    await eventStore;
+    await eventStore; 
   }
-  paginateData();
-});
+  paginateData()
+})
 
 watchEffect(() => {
-  paginateData();
-});
+  paginateData()
+})
 </script>
 
 <template>
@@ -38,7 +39,7 @@ watchEffect(() => {
       </td>
       <td class="px-4 py-2 border">
         <RouterLink
-          :to="{ name: 'list-view', params: { id: event.id } }"
+          :to="{ name: 'layout-view', params: { id: event.id } }"
           class="text-600 hover:underline"
         >
           {{ event.name }}
@@ -57,5 +58,3 @@ watchEffect(() => {
     </tr>
   </tbody>
 </template>
-
-
