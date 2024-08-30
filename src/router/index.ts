@@ -5,7 +5,7 @@ import CountryDetail from '@/views/event/CountryDetailView.vue'
 import MedalDetail from '@/views/event/MedalView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import NetworkErrorView from '@/views/NetworkErrorView.vue'
-
+import nProgress from 'nprogress'
 import EventService from '@/services/Service'
 import { useEventStore } from '@/stores/event'
 
@@ -70,8 +70,24 @@ const router = createRouter({
       name: 'network-error-view',
       component: NetworkErrorView
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
+
+router.beforeEach(() => {
+  nProgress.start()
+})
+
+router.afterEach(() => {
+  nProgress.done()
+})
+
 
 
 export default router
