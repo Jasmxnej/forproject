@@ -42,116 +42,59 @@ function updatePageSize(size: number) {
 function changePage(newPage: number) {
   page.value = newPage;
 }
-
 </script>
 
 <template>
-  <h1 class="title">Olympic Medal Table</h1>
+  <div class="p-4">
+    <h1 class="text-3xl font-bold text-center mb-6">Olympic Medal Table</h1>
 
-  <table class="medal-table">
-    <thead>
-      <tr class="header-row">
-        <th class="cell flag-cell">Flag</th>
-        <th class="cell country-cell">
-          Country
-          <select
-            id="page-size"
-            v-model="pageSize"
-            @change="updatePageSize(pageSize)"
-            class="page-size-selector"
-          >
-            <option v-for="n in [5, 10, 15, 20, 25, 30]" :key="n" :value="n">{{ n }}</option>
-          </select>
-        </th>
-        <th class="cell">Gold</th>
-        <th class="cell">Silver</th>
-        <th class="cell">Bronze</th>
-        <th class="cell">Total Medals</th>
-      </tr>
-    </thead>
-    
-    <CountryContent :page="page" :pageSize="pageSize" />
-  </table>
+    <table class="w-full border-collapse mb-6">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 border text-center">Flag</th>
+          <th class="px-4 py-2 border text-center">
+            Country
+            <select
+              id="page-size"
+              v-model="pageSize"
+              @change="updatePageSize(pageSize)"
+              class="ml-2 border rounded px-2 py-1"
+            >
+              <option v-for="n in [5, 10, 15, 20, 25, 30]" :key="n" :value="n">{{ n }}</option>
+            </select>
+          </th>
+          <th class="px-4 py-2 border text-center">Gold</th>
+          <th class="px-4 py-2 border text-center">Silver</th>
+          <th class="px-4 py-2 border text-center">Bronze</th>
+          <th class="px-4 py-2 border text-center">Total Medals</th>
+        </tr>
+      </thead>
+      
+      <CountryContent :page="page" :pageSize="pageSize" />
+    </table>
 
-  <div v-if="totalPages > 1" class="pagination">
-    <RouterLink
-      v-if="hasPrevPage"
-      :to="{ name: 'list-view', query: { page: page - 1, pageSize: pageSize } }"
-      @click.prevent="changePage(page - 1)"
-      class="pagination-link"
-    >
-      &#60; Previous
-    </RouterLink>
-    <span class="pagination-info">Page {{ page }} of {{ totalPages }}</span>
-    <RouterLink
-      v-if="hasNextPage"
-      :to="{ name: 'list-view', query: { page: page + 1, pageSize: pageSize } }"
-      @click.prevent="changePage(page + 1)"
-      class="pagination-link"
-    >
-      Next &#62;
-    </RouterLink>
-  </div>
+    <div v-if="totalPages > 1" class="flex justify-between items-center max-w-lg mx-auto mb-6">
+      <RouterLink
+        v-if="hasPrevPage"
+        :to="{ name: 'list-view', query: { page: page - 1, pageSize: pageSize } }"
+        @click.prevent="changePage(page - 1)"
+        class="text-gray-700 hover:underline"
+      >
+        &#60; Previous
+      </RouterLink>
+      <span class="font-semibold">Page {{ page }} of {{ totalPages }}</span>
+      <RouterLink
+        v-if="hasNextPage"
+        :to="{ name: 'list-view', query: { page: page + 1, pageSize: pageSize } }"
+        @click.prevent="changePage(page + 1)"
+        class="text-gray-700 hover:underline"
+      >
+        Next &#62;
+      </RouterLink>
+    </div>
 
-  <div v-if="totalEvents === 0" class="no-events">
-    <p>No countries available.</p>
+    <div v-if="totalEvents === 0" class="text-center text-gray-500">
+      <p>No countries available.</p>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.title {
-  font-size: 1.875rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.medal-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1.5rem;
-}
-
-.header-row {
-  background-color: #f3f4f6;
-}
-
-.cell {
-  padding: 0.5rem 1rem;
-  border: 1px solid #e5e7eb;
-  text-align: center;
-}
-
-.page-size-selector {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 24rem;
-  margin: 0 auto;
-  margin-bottom: 1.5rem;
-}
-
-.pagination-link {
-  color: #374151;
-  text-decoration: none;
-}
-
-.pagination-link:hover {
-  text-decoration: underline;
-}
-
-.pagination-info {
-  font-weight: 600;
-}
-
-.no-events {
-  text-align: center;
-  color: #6b7280;
-}
-</style>
