@@ -3,6 +3,8 @@ import EventListView from '@/views/ListView.vue'
 import LayoutView from '@/views/event/LayoutView.vue'
 import CountryDetail from '@/views/event/CountryDetailView.vue'
 import MedalDetail from '@/views/event/MedalView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
+import NetworkErrorView from '@/views/NetworkErrorView.vue'
 
 import EventService from '@/services/Service'
 import { useEventStore } from '@/stores/event'
@@ -51,6 +53,22 @@ const router = createRouter({
           props: true
         }
       ]
+    },
+    {
+      path: '/404/:resource',
+      name: '404-resource-view',
+      component: NotFoundView,
+      props: true
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: 'not-found',
+      component: NotFoundView
+    },
+    {
+      path: '/network-error',
+      name: 'network-error-view',
+      component: NetworkErrorView
     }
   ]
 })
